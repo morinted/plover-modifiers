@@ -1,5 +1,6 @@
 import copy
 
+
 def makeDictionary(hotkeys, modifiers):
 
     dictionary_entries = []
@@ -8,7 +9,7 @@ def makeDictionary(hotkeys, modifiers):
         modifier = modifiers[0]
         for hotkey in hotkeys:
             dictionary_entries.append([modifier[0] + "/" + hotkey[0],
-                modifier[1] + "(" + hotkey[1] + ")"])
+                                      modifier[1] + "(" + hotkey[1] + ")"])
     else:
         for modifier in modifiers:
             new_mods = list(modifiers)
@@ -18,8 +19,9 @@ def makeDictionary(hotkeys, modifiers):
             iter_dict = copy.deepcopy(new_dict)
             for entry in iter_dict:
                 dictionary_entries.append([modifier[0] + "/" + entry[0],
-                    modifier[1] + "(" + entry[1] + ")"])
-    return dictionary_entries           
+                                           modifier[1] + "(" + entry[1] + ")"])
+    return dictionary_entries
+
 
 def wrapDictionary(dictionary_entries):
     for entry in dictionary_entries:
@@ -27,16 +29,17 @@ def wrapDictionary(dictionary_entries):
         entry[1] = '"{#' + entry[1] + '}"'
     return dictionary_entries
 
+
 def writeDictionary(dictionary_entries, specials):
     modifiers_json = open('modifiers.json', 'w')
     modifiers_json.write("%s\n" % "{")
     for entry in dictionary_entries:
         modifiers_json.write("%s\n" % (entry[0] + ": " + entry[1] + ','))
-    
     for special in specials:
         modifiers_json.write("%s\n" % special)
 
     modifiers_json.write("%s\n" % "}")
+
 
 def makeEsses():
     esses = '"S'
@@ -45,11 +48,13 @@ def makeEsses():
     esses += '": "This entry allows the Plover buffer to increase to 100."'
     return esses
 
+
 def neutralizeModifiers(modifiers):
     neutralized = []
     for modifier in modifiers:
         neutralized.append('"' + modifier[0] + '": "{}",')
     return neutralized
+
 
 def main():
 
@@ -60,17 +65,18 @@ def main():
 
     hotkeys = [
         ["A*", "a"],    ["PW*", "b"],   ["KR*", "c"],   ["TK*", "d"],
-        ["E*", "e"],    ["TP*", "f"],   ["TKPW*", "g"], ["H*", "h"],
-        ["EU*", "i"],   ["SKWR*", "j"], ["K*", "k"],    ["HR*", "l"],
+        ["*E", "e"],    ["TP*", "f"],   ["TKPW*", "g"], ["H*", "h"],
+        ["*EU", "i"],   ["SKWR*", "j"], ["K*", "k"],    ["HR*", "l"],
         ["PH*", "m"],   ["TPH*", "n"],  ["O*", "o"],    ["P*", "p"],
         ["KW*", "q"],   ["R*", "r"],    ["S*", "s"],    ["T*", "t"],
-        ["U*", "u"],    ["SR*", "v"],   ["W*", "w"],    ["KP*", "x"],
-        ["KWR*", "y"],  ["STKPW*", "z"],["S#", "1"],    ["T#", "2"],
-        ["P#", "3"],    ["H#", "4"],    ["A#", "5"],    ["O#", "0"],
-        ["#F", "6"],    ["#P", "7"],    ["#L", "8"],    ["#T", "9"],
+        ["*U", "u"],    ["SR*", "v"],   ["W*", "w"],    ["KP*", "x"],
+        ["KWR*", "y"], ["STKPW*", "z"], ["1", "1"],    ["2", "2"],
+        ["3", "3"],    ["4", "4"],    ["5", "5"],    ["0", "0"],
+        ["6", "6"],    ["7", "7"],    ["8", "8"],    ["9", "9"],
         ["TKHRAO*ET", "Delete"],        ["SP*S", ""],   ["R-R", "Enter"],
-        ["PW*FP", "BackSpace"],         ["STPH-P", "Up"],["STPH-G", "Down"],
-        ["STPH-R", "Left"],             ["STPH-B", "Right"]
+        ["PW*FP", "BackSpace"],       ["STPH-P", "Up"], ["STPH-G", "Down"],
+        ["STPH-R", "Left"],             ["STPH-B", "Right"],
+        ["TA*B", "Tab"]
         ]
 
     # format of a Plover command: {#FirstMod(SecondMod(x))}
@@ -83,20 +89,17 @@ def main():
         ["STP*", "Shift_L"]     # Shift     (Sf)
         ]
 
-
-
     # Delete key is added
     # 100 esses is added - note it has no trailing comma!
     specials = []
     specials.extend(neutralizeModifiers(modifiers))
-    specials.extend(['"TKHRAO*ET": "{#Delete}",',
-                makeEsses()])
+    specials.extend(['"TKHRAO*ET": "{#Delete}",', makeEsses()])
 
     dictionary_entries = makeDictionary(hotkeys, modifiers)
     dictionary_entries = wrapDictionary(dictionary_entries)
     writeDictionary(dictionary_entries, specials)
     print("All done, " +
-        "'modifiers.json' should be available in the current directory.")
+          "'modifiers.json' should be available in the current directory.")
 
 if __name__ == '__main__':
     main()
