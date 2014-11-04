@@ -73,7 +73,7 @@ def main():
         ["KWR*", "y"], ["STKPW*", "z"], ["1", "1"],    ["2", "2"],
         ["3", "3"],    ["4", "4"],    ["5", "5"],    ["0", "0"],
         ["6", "6"],    ["7", "7"],    ["8", "8"],    ["9", "9"],
-        ["TKHRAO*ET", "Delete"],        ["SP*S", ""],   ["R-R", "Enter"],
+        ["TKHRAO*ET", "Delete"],        ["SP*S", ""],   ["R-R", "Return"],
         ["PW*FP", "BackSpace"],       ["STPH-P", "Up"], ["STPH-G", "Down"],
         ["STPH-R", "Left"],             ["STPH-B", "Right"],
         ["TA*B", "Tab"]
